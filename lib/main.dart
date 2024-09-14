@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:generate_crossword/crossword_generator_app.dart';
+import 'package:generate_crossword/providers.dart';
 
 void main() {
     runApp(
@@ -12,14 +14,7 @@ void main() {
           colorSchemeSeed: Colors.blueGrey,
           brightness: Brightness.light,
         ),
-        home: Scaffold(
-          body: Center(
-            child: Text(
-              'Hello, World!',
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
-        ),
+        home: CrosswordGeneratorApp()
       ),
     ),
   );
