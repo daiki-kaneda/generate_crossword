@@ -22,7 +22,7 @@ class CrossWordWidget extends ConsumerWidget {
   TableViewCell _cellBuilder(BuildContext context,TableVicinity vincinity){
     return TableViewCell(
       child: Consumer(builder:(context, ref, child) {
-        final location = Location.at(vincinity.xIndex, vincinity.yIndex);
+        final location = Location.at(vincinity.column, vincinity.row);
         final character = ref.watch(crossWordProvider.select(
           (crosswordAsync){
             return crosswordAsync.when(

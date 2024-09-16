@@ -46,7 +46,7 @@ class _CrosswordGeneratorMenu extends ConsumerWidget {        // Add from here
         menuChildren: [
           for (final entry in CrossWordSize.values)
             MenuItemButton(
-              onPressed: () => ref.read(sizeProvider.notifier).setSize(entry),
+              onPressed: () =>ref.read(sizeProvider.notifier).setSize(entry),
               leadingIcon: entry == ref.watch(sizeProvider)
                   ? Icon(Icons.radio_button_checked_outlined)
                   : Icon(Icons.radio_button_unchecked_outlined),

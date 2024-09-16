@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:generate_crossword/isolates.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:math' hide log;
 
@@ -59,22 +61,7 @@ final _random = Random();
 Stream<model.Crossword> crossWord(CrossWordRef ref) async* {
   final size = ref.watch(sizeProvider);
   final wordList = await ref.watch(wordListProvider.future);
-  var crossword =
-      model.Crossword.crossword(width: size.width, height: size.height);
 
-  while (crossword.characters.length < size.width * size.height * 0.8) {
-    print('word length' + crossword.words.length.toString());
-    final word = wordList.randomElement();
-    final direction =
-        _random.nextBool() ? model.Direction.across : model.Direction.down;
-    final location = model.Location.at(
-        _random.nextInt(size.width), _random.nextInt(size.height));
-
-    crossword =
-        crossword.addWord(word: word, direction: direction, location: location);
-    yield crossword;
-    await Future.delayed(Duration(milliseconds: 100));
-  }
-
-  yield crossword;
+  final emptyCrossword = model.Crossword.crossword(width: size.width, height: size.height);
+  yield* exploreCrosswordSolutions(emptyCrossword, wordList);
 }
