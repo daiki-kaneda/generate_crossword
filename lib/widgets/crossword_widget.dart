@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:generate_crossword/model.dart';
@@ -22,7 +24,7 @@ class CrossWordWidget extends ConsumerWidget {
   TableViewCell _cellBuilder(BuildContext context,TableVicinity vincinity){
     return TableViewCell(
       child: Consumer(builder:(context, ref, child) {
-        final location = Location.at(vincinity.column, vincinity.row);
+        final location = Location.at(vincinity.row, vincinity.column);
         final character = ref.watch(crossWordProvider.select(
           (crosswordAsync){
             return crosswordAsync.when(

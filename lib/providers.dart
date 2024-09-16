@@ -61,7 +61,6 @@ final _random = Random();
 Stream<model.Crossword> crossWord(CrossWordRef ref) async* {
   final size = ref.watch(sizeProvider);
   final wordList = await ref.watch(wordListProvider.future);
-
   final emptyCrossword = model.Crossword.crossword(width: size.width, height: size.height);
-  yield* exploreCrosswordSolutions(emptyCrossword, wordList);
+  yield* exploreCrosswordSolutions3(emptyCrossword, wordList);
 }
