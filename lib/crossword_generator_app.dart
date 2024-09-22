@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:generate_crossword/providers.dart';
+import 'package:generate_crossword/widgets/crossword_info_widget.dart';
 import 'package:generate_crossword/widgets/crossword_widget.dart';
 
 class CrosswordGeneratorApp extends StatelessWidget{
@@ -22,8 +23,18 @@ class CrosswordGeneratorApp extends StatelessWidget{
         ),
         actions: [_CrosswordGeneratorMenu()],
       ),
-      body: const SafeArea(child: 
-      CrossWordWidget()
+      body: SafeArea(child: 
+      Stack(
+        children: [
+          const Positioned.fill(child: CrossWordWidget()),
+          Consumer(builder:(context, ref, child) {
+            final showDisplayInfo = ref.watch(showDisplayInfoProvider);
+            return Opacity(
+              opacity: showDisplayInfo ? 1.0:0.0,
+              child:const CrosswordInfoWidget(),);
+          },)
+        ],
+      )
       )
     )
     );
@@ -52,6 +63,22 @@ class _CrosswordGeneratorMenu extends ConsumerWidget {        // Add from here
                   : Icon(Icons.radio_button_unchecked_outlined),
               child: Text(entry.label),
             ),
+            MenuItemButton(
+              leadingIcon: ref.watch(showDisplayInfoProvider) ? 
+              const Icon(Icons.check_box_outlined):
+              const Icon(Icons.check_box_outline_blank_outlined),
+              onPressed: () {
+                ref.read(showDisplayInfoProvider.notifier).toggle();
+              },
+              child: Text('Display Info')),
+            for (final count in BackgroundWorkers.values)    
+            MenuItemButton(
+              leadingIcon: count == ref.watch(workerCountProvider)
+                  ? Icon(Icons.radio_button_checked_outlined)
+                  : Icon(Icons.radio_button_unchecked_outlined),
+              onPressed: () =>
+                  ref.read(workerCountProvider.notifier).setCount(count),
+              child: Text(count.label),    )
         ],
         builder: (context, controller, child) => IconButton(
           onPressed: () => controller.open(),

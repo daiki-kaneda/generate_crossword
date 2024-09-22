@@ -25,25 +25,36 @@ class CrossWordWidget extends ConsumerWidget {
     return TableViewCell(
       child: Consumer(builder:(context, ref, child) {
         final location = Location.at(vincinity.row, vincinity.column);
-        final character = ref.watch(crossWordProvider.select(
-          (crosswordAsync){
-            return crosswordAsync.when(
-              data:(crossword) => crossword.characters[location]?.character, 
+        final character = ref.watch(workQueueProvider.select(
+          (workQueueAsync){
+            return workQueueAsync.when(
+              data:(workQueue) => workQueue.crossword.characters[location]?.character, 
               error:(error, stackTrace) => null, 
               loading:() => null,);
           }
           ));
+        
+        final exploreLocation = ref.watch(workQueueProvider.select(
+          (workQueueAsync) => workQueueAsync.when(
+            data: (workQueue)=>workQueue.locationsToTry.keys.contains(location), 
+            error: (_,__)=>false,
+            loading: ()=>false))
+          );
 
         if(character!=null){
-          return Container(
-            color: Theme.of(context).colorScheme.onPrimary,
+          return AnimatedContainer(
+            duration: Durations.extralong1,
+            curve: Curves.easeInOut,
+            color: exploreLocation ? Theme.of(context).colorScheme.primary:Theme.of(context).colorScheme.onPrimary,
             child: Center(
-              child: Text(
-                character,
-              style: TextStyle(
-                fontSize: 24,
-                color: Theme.of(context).colorScheme.primary
-              ),),
+              child: AnimatedDefaultTextStyle(
+                style: TextStyle(
+                  fontSize: 24,
+                  color: exploreLocation ? Theme.of(context).colorScheme.onPrimary:Theme.of(context).colorScheme.primary
+                ), 
+                curve: Curves.easeInOut,
+                duration: Durations.extralong1,
+                child: Text(character),)
             ),
           );
         }

@@ -10,6 +10,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Crossword.serializer)
       ..add(CrosswordCharacter.serializer)
       ..add(CrosswordWord.serializer)
+      ..add(DisplayInfo.serializer)
       ..add(Location.serializer)
       ..add(WorkQueue.serializer)
       ..addBuilderFactory(
